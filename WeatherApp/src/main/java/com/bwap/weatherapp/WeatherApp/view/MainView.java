@@ -107,7 +107,6 @@ public class MainView<cityName> extends UI {
         formLayout.setSpacing(true);
         formLayout.setMargin(true);
 
-        // Selection Components
         unitSelect = new NativeSelect<>();
         unitSelect.setWidth("70px");
         ArrayList<String> items = new ArrayList<>();
@@ -118,12 +117,12 @@ public class MainView<cityName> extends UI {
         unitSelect.setValue(items.get(0));
         formLayout.addComponents(unitSelect);
 
-        // cityTextField
+       
         cityTextField = new TextField();
         cityTextField.setWidth("80%");
         formLayout.addComponents(cityTextField);
 
-        // Search Icon
+       
         searchButton = new Button();
         searchButton.setIcon(VaadinIcons.SEARCH);
         formLayout.addComponent(searchButton);
@@ -135,12 +134,12 @@ public class MainView<cityName> extends UI {
         Dashboard = new HorizontalLayout();
         Dashboard.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
-        // City Location
+        
         location = new Label("Currently in Bhakkar");
         location.addStyleName(ValoTheme.LABEL_H2);
         location.addStyleName(ValoTheme.LABEL_LIGHT);
 
-        // Current Temp
+      
         currentTemp = new Label("10F");
         currentTemp.setStyleName(ValoTheme.LABEL_BOLD);
         currentTemp.setStyleName(ValoTheme.LABEL_H1);
@@ -152,23 +151,22 @@ public class MainView<cityName> extends UI {
         mainDescriptionLayout = new HorizontalLayout();
         mainDescriptionLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
-        // descriptjon Layout
+       
         VerticalLayout descriptionLayout = new VerticalLayout();
         descriptionLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
-        // Weather Description dummyData
+      
         weatherDescription = new Label("Description: Clear Skies");
         weatherDescription.setStyleName(ValoTheme.LABEL_SUCCESS);
         descriptionLayout.addComponents(weatherDescription);
 
-        // Min weather dummyData
         weatherMin = new Label("Min:53");
         descriptionLayout.addComponents(weatherMin);
-        // Max weather dummyData
+    
         weatherMax = new Label("Max:22");
         descriptionLayout.addComponents(weatherMax);
 
-        // Pressure, humidity, wind, Felslike dummyData
+      
 
         VerticalLayout pressureLayout = new VerticalLayout();
         pressureLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
@@ -189,7 +187,7 @@ public class MainView<cityName> extends UI {
 
     }
 
-    // footer
+
 
     private void footer() {
         footer = new HorizontalLayout();
@@ -204,15 +202,13 @@ public class MainView<cityName> extends UI {
         mainLayout.addComponents(footer);
     }
 
-    // UI Update Method
-    // Will be invoked only when Search Button is Clicked
     private void updateUI() throws JSONException {
-        // Getting City name from text field and assignig it to API URL
+      
         String city = cityTextField.getValue();
         String defaultUnit;
         weatherService.setCityName(city);
 
-        // Checking Units and Assigning value to API url using setUnit()
+       
         if (unitSelect.getValue().equals("F")) {
             weatherService.setUnit("imperials");
             unitSelect.setValue("F");
@@ -223,13 +219,13 @@ public class MainView<cityName> extends UI {
             unitSelect.setValue("C");
         }
 
-        // Updaing City Temp and Unit
+     
         location.setValue("Currently in " + city);
         JSONObject mainObject = weatherService.returnMainObject();
         int temp = mainObject.getInt("temp");
         currentTemp.setValue(temp + defaultUnit);
 
-        // getting Icon form API
+     
         String iconCode = null;
         String weatherDescriptionNew = null;
         JSONArray jsonArray = weatherService.returnWeatherArray();
@@ -239,33 +235,32 @@ public class MainView<cityName> extends UI {
             weatherDescriptionNew = weatherObject.getString("description");
             System.out.println(iconCode);
         }
-        // Setting icon between city name and temp
+        
         iconImg.setSource(new ExternalResource("http://openweathermap.org/img/wn/" + iconCode + "@2x.png"));
-        // Setting Icon as Main Logo
-
+       
         logo.setSource(new ExternalResource("http://openweathermap.org/img/wn/" + iconCode + "@2x.png"));
 
-        // updating Weather Description
+      
         weatherDescription.setValue("Description: " + weatherDescriptionNew);
 
-        // Updating Max Temp
+      
         weatherMax.setValue(
                 "Max Temp: " + weatherService.returnMainObject().getInt("temp_max") + "\u00b0" + unitSelect.getValue());
-        // Updating Min Temp
+        
         weatherMin.setValue(
                 "Min Temp: " + weatherService.returnMainObject().getInt("temp_min") + "\u00b0" + unitSelect.getValue());
-        // Updating Pressure
+       
         pressureLabel.setValue("Pressure: " + weatherService.returnMainObject().getInt("pressure"));
-        // Updating Humidity
+       
         humidityLabel.setValue("Humidity: " + weatherService.returnMainObject().getInt("humidity"));
 
-        // Updating Wind
+       
         windSpeedLabel.setValue("Wind: " + weatherService.returnWindObject().getInt("speed") + "m/s");
-        // Updating Feels Like
+        
         feelsLike.setValue("Feelslike: " + weatherService.returnMainObject().getDouble("feels_like"));
 
-        // Adding Dashboard and main Description
-        // it will only appear when the search button is clicked
+        
+    
         mainLayout.addComponents(Dashboard, mainDescriptionLayout, footer);
     }
 

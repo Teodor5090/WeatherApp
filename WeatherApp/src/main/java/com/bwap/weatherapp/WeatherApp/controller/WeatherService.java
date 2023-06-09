@@ -19,9 +19,9 @@ public class WeatherService {
     private String unit;
     private String APIkey = "ba61e79a0119a86f77cc471643451b24";
 
-    //Getting Data from OpenWeather API
+    
     public JSONObject getWeather(){
-        client = new OkHttpClient();  //using OKHTTP dependency . You have to add this mannually form OKHTTP website
+        client = new OkHttpClient();  
         Request request = new Request.Builder()
                 .url("http://api.openweathermap.org/data/2.5/weather?q="+getCityName()+"&units="+getUnit()+"&appid="+APIkey)
                 .build();
@@ -35,8 +35,7 @@ public class WeatherService {
         return null;
     }
 
-    //Getting required data from Weather JSON API
-    //JSON Objects and JSON Arrays
+
 
 
     public JSONArray returnWeatherArray() throws JSONException {
@@ -58,10 +57,10 @@ public class WeatherService {
     public JSONObject returnSysObject() throws JSONException{
         JSONObject sys = getWeather().getJSONObject("sys");
         return sys;
-        } // to  pull the values of Sys from JSON
+        } 
 
 
-     // Getters and Setters for CityName and Unit
+    
 
     public String getCityName() {
         return cityName;
